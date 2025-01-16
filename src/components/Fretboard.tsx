@@ -95,7 +95,6 @@ const drawFretboardIn2DContext =
           fretboardLengthPx + 0.5,
           Math.floor(totalStringDistPx) + 0.5
         );
-        console.log(totalStringDistPx);
         ctx.stroke();
         totalStringDistPx += stringDistance;
       });
