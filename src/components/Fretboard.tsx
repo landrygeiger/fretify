@@ -98,7 +98,6 @@ const drawFretboardIn2DContext =
         ctx.stroke();
         totalStringDistPx += stringDistance;
       });
-      // Draw strings
     });
 
 const drawFretboardOnCanvas =
