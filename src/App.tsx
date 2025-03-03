@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Fretboard from './components/Fretboard';
+import Fretboard from './components/Fretboard/Fretboard';
 
 const App = () => {
   const [numFrets, setNumFrets] = useState(12);
