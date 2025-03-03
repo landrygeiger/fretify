@@ -1,5 +1,21 @@
 import { Effect, flow } from 'effect';
+import { match } from 'ts-pattern';
 import { FC, useEffect, useRef } from 'react';
+import { drawCenteredCircle } from '../utils/canvas';
+
+const getFretMarker = (fretNum: number) => {
+  if (fretNum % 12 == 0 && fretNum != 0) {
+    return 'double-dot' as const;
+  } else if (
+    (fretNum % 12) % 2 == 1 &&
+    fretNum % 12 != 11 &&
+    fretNum % 12 != 1
+  ) {
+    return 'single-dot' as const;
+  } else {
+    return 'none' as const;
+  }
+};
 
 /**
  * Multiply the scale length by this fret factor to find the location of the
@@ -7,6 +23,8 @@ import { FC, useEffect, useRef } from 'react';
  * location of the second fret, and so on.
  */
 const FRET_DISTANCE_FACTOR = 1 / 17.817154;
+
+const INLAY_RADIUS = 2;
 
 const getFretDistancesForScaleLength =
   (distanceFactor: number) =>
@@ -65,22 +83,53 @@ const drawFretboardIn2DContext =
   (numFrets: number) =>
   (numStrings: number) =>
   (fretDistanceFactor: number) =>
+  (inlayRadius: number) =>
   (ctx: CanvasRenderingContext2D) =>
     Effect.sync(() => {
+      // Drawing at 0.5px intervals makes lines look less antialiased.
+      ctx.clearRect(0, 0, fretboardLengthPx + 0.5, fretboardWidthPx + 0.5);
       let totalFretDistPx = 0;
       // Num frets + 1 so that we can use one fret as the distance behind the nut
       const distsPx = getFretDistancesPx(fretDistanceFactor)(fretboardLengthPx)(
         numFrets + 1
       );
 
-      // Draw fret bars (don't draw last fret bar)
-      distsPx.slice(0, -1).forEach((distPx, i) => {
+      // Draw fret bars (don't draw last fret bar) and markers
+      distsPx.forEach((distPx, i) => {
         totalFretDistPx += distPx;
-        ctx.lineWidth = i === 0 ? 6 : i === distsPx.length - 1 ? 0 : 1.5;
-        ctx.beginPath();
-        ctx.moveTo(Math.floor(totalFretDistPx), 0);
-        ctx.lineTo(Math.floor(totalFretDistPx), fretboardWidthPx);
-        ctx.stroke();
+        if (i != distsPx.length - 1) {
+          ctx.lineWidth = i === 0 ? 6 : i === distsPx.length - 1 ? 0 : 1.5;
+          ctx.strokeStyle = 'black';
+          ctx.beginPath();
+          ctx.moveTo(Math.floor(totalFretDistPx), 0);
+          ctx.lineTo(Math.floor(totalFretDistPx), fretboardWidthPx);
+          ctx.stroke();
+        }
+        match(getFretMarker(i))
+          .with('single-dot', () => {
+            const x = totalFretDistPx - distPx / 2;
+            const y = fretboardWidthPx / 2;
+            Effect.runSync(
+              drawCenteredCircle(ctx)(x)(y)(inlayRadius)({
+                color: 'lightgray',
+                filled: true,
+              })
+            );
+          })
+          .with('double-dot', () => {
+            const x = totalFretDistPx - distPx / 2;
+            const stringDistance = fretboardWidthPx / numStrings;
+            const y1 = stringDistance * 2;
+            const y2 = fretboardWidthPx - stringDistance * 2;
+            [y1, y2].forEach((y) =>
+              Effect.runSync(
+                drawCenteredCircle(ctx)(x)(y)(inlayRadius)({
+                  color: 'lightgray',
+                  filled: true,
+                })
+              )
+            );
+          });
       });
 
       const stringDistance = fretboardWidthPx / numStrings;
@@ -104,13 +153,14 @@ const drawFretboardOnCanvas =
   (numFrets: number) =>
   (numStrings: number) =>
   (fretDistanceFactor: number) =>
+  (inlayRadius: number) =>
   (canvas: HTMLCanvasElement) =>
     Effect.gen(function* () {
       const ctx = yield* getCanvas2DContext(canvas);
       console.log(canvas.width, canvas.height);
       return yield* drawFretboardIn2DContext(canvas.width)(canvas.height)(
         numFrets
-      )(numStrings)(fretDistanceFactor)(ctx);
+      )(numStrings)(fretDistanceFactor)(inlayRadius)(ctx);
     });
 
 type Props = {
@@ -133,11 +183,11 @@ const Fretboard: FC<Props> = ({ numStrings, numFrets, highlightNote }) => {
     if (canvasRef.current) {
       Effect.runFork(
         drawFretboardOnCanvas(numFrets)(numStrings)(FRET_DISTANCE_FACTOR)(
-          canvasRef.current
-        )
+          INLAY_RADIUS
+        )(canvasRef.current)
       );
     }
-  }, []);
+  }, [numStrings, numFrets, highlightNote]);
 
   return (
     <canvas
