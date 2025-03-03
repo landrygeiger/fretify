@@ -9,15 +9,29 @@ const Cell: FC<{ rowIndex: number; colIndex: number }> = ({
   rowIndex,
   colIndex,
 }) => {
-  const { relativeFretDistances, numStrings, canClickNotes } =
-    useFretboardContext();
+  const {
+    relativeFretDistances,
+    numStrings,
+    canClickNotes,
+    nutWidth,
+    nutColor,
+    fretWidth,
+    fretColor,
+    stringWidth,
+    stringColor,
+  } = useFretboardContext();
   const inlayType = determineInlay(colIndex);
   const hasInlay = match(inlayType)
     .with('single-dot', () => rowIndex === Math.floor(numStrings / 2))
     .with('double-dot', () => rowIndex === 2 || rowIndex === numStrings - 2)
     .with('none', () => false)
     .exhaustive();
+
   const showButton = canClickNotes && rowIndex !== numStrings;
+
+  const hasLeftBorder = colIndex !== 0;
+  const hasNut = colIndex === 1;
+  const hasTopBorder = rowIndex !== 0;
 
   return (
     <div
@@ -26,9 +40,14 @@ const Cell: FC<{ rowIndex: number; colIndex: number }> = ({
         position: 'relative',
         flexGrow: relativeFretDistances[colIndex],
         height: '100%',
-        borderTop: rowIndex !== 0 ? '1px solid black' : 'none',
-        borderLeft:
-          colIndex !== 0 ? `${colIndex === 1 ? 3 : 1}px solid black` : 'none',
+        borderTop: hasTopBorder
+          ? `${stringWidth}px solid ${stringColor}`
+          : 'none',
+        borderLeft: hasLeftBorder
+          ? `${hasNut ? nutWidth : fretWidth}px solid ${
+              hasNut ? nutColor : fretColor
+            }`
+          : 'none',
       }}
     >
       {hasInlay && <Inlay />}

@@ -18,6 +18,12 @@ type Props = {
   noteButtonDiameter?: number;
   noteButtonColor?: string;
   noteButtonHoverColor?: string;
+  nutWidth?: number;
+  nutColor?: string;
+  fretWidth?: number;
+  fretColor?: string;
+  stringWidth?: number;
+  stringColor?: string;
 };
 
 const Fretboard: FC<Props> = ({
@@ -30,6 +36,12 @@ const Fretboard: FC<Props> = ({
   noteButtonDiameter = 10,
   noteButtonColor = 'transparent',
   noteButtonHoverColor = 'red',
+  nutWidth = 3,
+  nutColor = 'black',
+  fretWidth = 1,
+  fretColor = 'black',
+  stringWidth = 1,
+  stringColor = 'black',
 }) => {
   const relativeFretDistances = normalize(
     calcRelativeFretDistances(numFrets + 1)
@@ -46,6 +58,12 @@ const Fretboard: FC<Props> = ({
     noteButtonDiameter,
     noteButtonColor,
     noteButtonHoverColor,
+    nutWidth,
+    nutColor,
+    fretWidth,
+    fretColor,
+    stringWidth,
+    stringColor,
   };
 
   return (

@@ -11,6 +11,12 @@ export type FretboardContextValue = {
   noteButtonDiameter: number;
   noteButtonHoverColor: string;
   noteButtonColor: string;
+  nutWidth: number;
+  nutColor: string;
+  fretWidth: number;
+  fretColor: string;
+  stringWidth: number;
+  stringColor: string;
 };
 
 const FretboardContext = createContext<FretboardContextValue>({
@@ -24,6 +30,12 @@ const FretboardContext = createContext<FretboardContextValue>({
   noteButtonDiameter: 0,
   noteButtonHoverColor: 'black',
   noteButtonColor: 'black,',
+  nutWidth: 0,
+  nutColor: 'black',
+  fretWidth: 0,
+  fretColor: 'black',
+  stringWidth: 0,
+  stringColor: 'black',
 });
 
 export const useFretboardContext = () => useContext(FretboardContext);
