@@ -7,7 +7,7 @@ const App = () => {
 
   return (
     <>
-      <Fretboard numFrets={numFrets} numStrings={numStrings} />
+      <Fretboard numFrets={numFrets} numStrings={numStrings} canClickNotes />
       <div>
         <p>Frets</p>
         <button onClick={() => setNumFrets(numFrets + 1)}>+</button>
