@@ -11,20 +11,7 @@ import Row from './Row';
 type Props = {
   numFrets: number;
   numStrings: number;
-  inlayDiameter?: number;
-  inlayColor?: string;
-  canClickNotes?: boolean;
-  onClick?: (fretNum: number, stringNum: number) => unknown;
-  noteButtonDiameter?: number;
-  noteButtonColor?: string;
-  noteButtonHoverColor?: string;
-  nutWidth?: number;
-  nutColor?: string;
-  fretWidth?: number;
-  fretColor?: string;
-  stringWidth?: number;
-  stringColor?: string;
-};
+} & Partial<FretboardContextValue>;
 
 const Fretboard: FC<Props> = ({
   numFrets,
@@ -42,6 +29,8 @@ const Fretboard: FC<Props> = ({
   fretColor = 'black',
   stringWidth = 1,
   stringColor = 'black',
+  disabled = false,
+  noteButtonDisabledHoverColor = 'gray',
 }) => {
   const relativeFretDistances = normalize(
     calcRelativeFretDistances(numFrets + 1)
@@ -64,6 +53,8 @@ const Fretboard: FC<Props> = ({
     fretColor,
     stringWidth,
     stringColor,
+    disabled,
+    noteButtonDisabledHoverColor,
   };
 
   return (

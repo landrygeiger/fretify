@@ -7,10 +7,18 @@ type Props = {
 };
 
 const NoteButton: FC<Props> = ({ rowIndex, colIndex }) => {
-  const { onClick, noteButtonDiameter, noteButtonColor, noteButtonHoverColor } =
-    useFretboardContext();
+  const {
+    onClick,
+    noteButtonDiameter,
+    noteButtonColor,
+    noteButtonHoverColor,
+    disabled,
+    noteButtonDisabledHoverColor,
+  } = useFretboardContext();
 
-  const handleClick = () => onClick(rowIndex + 1, colIndex);
+  const handleClick = () => {
+    if (!disabled) onClick(rowIndex + 1, colIndex);
+  };
 
   const [isHovered, setIsHovered] = useState(false);
   const handleMouseEnter = () => setIsHovered(true);
@@ -29,7 +37,7 @@ const NoteButton: FC<Props> = ({ rowIndex, colIndex }) => {
         height: rowIndex === 0 ? '200%' : '100%',
         border: 'none',
         backgroundColor: 'transparent',
-        cursor: 'pointer',
+        cursor: disabled ? 'unset' : 'pointer',
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -45,7 +53,11 @@ const NoteButton: FC<Props> = ({ rowIndex, colIndex }) => {
           width: noteButtonDiameter,
           height: noteButtonDiameter,
           borderRadius: '50%',
-          backgroundColor: isHovered ? noteButtonHoverColor : noteButtonColor,
+          backgroundColor: isHovered
+            ? disabled
+              ? noteButtonDisabledHoverColor
+              : noteButtonHoverColor
+            : noteButtonColor,
         }}
       />
     </button>
