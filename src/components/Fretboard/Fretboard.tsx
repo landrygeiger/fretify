@@ -31,6 +31,9 @@ const Fretboard: FC<Props> = ({
   stringColor = 'black',
   disabled = false,
   noteButtonDisabledHoverColor = 'gray',
+  highlightedNote = null,
+  highlightColor = 'blue',
+  highlightDiameter = 10,
 }) => {
   const relativeFretDistances = normalize(
     calcRelativeFretDistances(numFrets + 1)
@@ -55,6 +58,9 @@ const Fretboard: FC<Props> = ({
     stringColor,
     disabled,
     noteButtonDisabledHoverColor,
+    highlightedNote,
+    highlightDiameter,
+    highlightColor,
   };
 
   return (

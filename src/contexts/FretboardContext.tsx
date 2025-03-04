@@ -20,6 +20,9 @@ export type FretboardContextValue = {
   stringColor: string;
   disabled: boolean;
   noteButtonDisabledHoverColor: string;
+  highlightedNote: { string: number; fret: number } | null;
+  highlightDiameter: number;
+  highlightColor: string;
 };
 
 const FretboardContext = createContext<FretboardContextValue | undefined>(
