@@ -8,7 +8,7 @@ export type FretboardContextValue = {
   inlayColor: string;
   relativeFretDistances: number[];
   canClickNotes: boolean;
-  onClick: (fretNum: number, stringNum: number) => unknown;
+  onClick: (stringNum: number, fretNum: number) => unknown;
   noteButtonDiameter: number;
   noteButtonHoverColor: string;
   noteButtonColor: string;
