@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Fretboard from './components/Fretboard/Fretboard';
 import NoteInput from './components/NoteInput/NoteInput';
+import Button from './components/Base/Button';
+import Text from './components/Base/Text';
 
 const App = () => {
   const [numFrets, setNumFrets] = useState(12);
@@ -19,17 +21,19 @@ const App = () => {
         highlightedNote={highlightedNote}
         onClick={(string, fret) => setHighlightedNote({ string, fret })}
       />
-      <NoteInput onClick={console.log} />
-      <p>Highlighted Note: {JSON.stringify(highlightedNote)}</p>
+      <NoteInput onClick={console.log} className={'my-4'} />
+      <Text className="font-playfair-display">
+        Highlighted Note: {JSON.stringify(highlightedNote)}
+      </Text>
       <div>
-        <p>Frets</p>
-        <button onClick={() => setNumFrets(numFrets + 1)}>+</button>
-        <button onClick={() => setNumFrets(numFrets - 1)}>-</button>
+        <Text className="font-playfair-display">Frets</Text>
+        <Button onClick={() => setNumFrets(numFrets + 1)}>+</Button>
+        <Button onClick={() => setNumFrets(numFrets - 1)}>-</Button>
       </div>
       <div>
-        <p>Strings</p>
-        <button onClick={() => setNumStrings(numStrings + 1)}>+</button>
-        <button onClick={() => setNumStrings(numStrings - 1)}>-</button>
+        <Text>Strings</Text>
+        <Button onClick={() => setNumStrings(numStrings + 1)}>+</Button>
+        <Button onClick={() => setNumStrings(numStrings - 1)}>-</Button>
       </div>
     </>
   );
