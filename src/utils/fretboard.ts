@@ -1,4 +1,15 @@
+import * as Note from '../types/note';
+
 const FRET_DISTANCE_FACTOR = 1 / 17.817154;
+
+export const STANDARD_TUNING: Note.Note[] = [
+  { base: 'E', modifier: null },
+  { base: 'B', modifier: null },
+  { base: 'G', modifier: null },
+  { base: 'D', modifier: null },
+  { base: 'A', modifier: null },
+  { base: 'E', modifier: null },
+];
 
 export const calcRelativeFretDistances = (
   numFrets: number,
@@ -27,3 +38,9 @@ export const determineInlay = (fretNum: number) => {
     return 'none' as const;
   }
 };
+
+export const fretToNoteNumber = (
+  string: number,
+  fret: number,
+  tuning: Note.Note[]
+) => (Note.toNumber(tuning[string - 1]) + fret) % 12;

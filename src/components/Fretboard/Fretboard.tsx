@@ -17,7 +17,7 @@ const Fretboard: FC<Props> = ({
   numFrets,
   numStrings,
   inlayDiameter = 5,
-  inlayColor = 'lightgray',
+  inlayColor = 'gray',
   onClick = () => {},
   canClickNotes = false,
   noteButtonDiameter = 10,
@@ -68,8 +68,7 @@ const Fretboard: FC<Props> = ({
       style={{
         display: 'flex',
         flexDirection: 'column',
-        width: '500px',
-        height: '125px',
+        aspectRatio: '5/1',
       }}
     >
       <FretboardContextProvider value={fretboardContextValue}>

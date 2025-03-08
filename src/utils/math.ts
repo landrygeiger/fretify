@@ -4,3 +4,6 @@ export const normalize = (vector: number[]) => {
   const total = sum(vector);
   return vector.map((n) => n / total);
 };
+
+export const randomInt = (start: number, end: number) =>
+  Math.floor(Math.random() * (end - start)) + start;

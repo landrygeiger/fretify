@@ -66,7 +66,6 @@ const Cell: FC<{ rowIndex: number; colIndex: number }> = ({
           style={{
             position: 'absolute',
             bottom: 0,
-            top: '50%',
             left: '50%',
             transform: 'translate(-50%, 50%)',
             zIndex: 2,
