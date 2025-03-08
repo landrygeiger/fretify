@@ -27,6 +27,8 @@ export const isRareEnharmonic = (n: Note) =>
 
 export const toString = (n: Note) => `${n.base}${n.modifier ?? ''}`;
 
+export const toClassName = (n: Note) => `note-${toString(n).replace('#', 's')}`;
+
 export const toNumber = (n: Note) =>
   match(n)
     .with({ base: 'A', modifier: 'bb' }, () => 10)

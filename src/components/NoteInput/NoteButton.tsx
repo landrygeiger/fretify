@@ -12,7 +12,7 @@ const NoteButton: FC<Props> = ({ note, onClick }) => {
     onClick(note);
   };
   return (
-    <Button onClick={handleClick} className="h-12">
+    <Button onClick={handleClick} className={`h-12 ${Note.toClassName(note)}`}>
       {Note.toString(note)}
     </Button>
   );

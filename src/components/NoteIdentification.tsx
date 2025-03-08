@@ -5,6 +5,7 @@ import * as Note from '../types/note';
 import { randomInt } from '../utils/math';
 import { fretToNoteNumber, STANDARD_TUNING } from '../utils/fretboard';
 import Text from './Base/Text';
+import { flashElement } from '../utils/element';
 
 const NoteIdentification: FC = () => {
   const [score, setScore] = useState({ correct: 0, incorrect: 0 });
@@ -14,16 +15,20 @@ const NoteIdentification: FC = () => {
   });
 
   const handleGuess = (guess: Note.Note) => {
-    // need to convert a string and a fret into a note number
     const realNumber = fretToNoteNumber(
       highlightedNote.string,
       highlightedNote.fret,
       STANDARD_TUNING
     );
-    // convert guessed note into note number
     const guessedNumber = Note.toNumber(guess);
     const isCorrect = realNumber === guessedNumber;
-    // compare
+
+    document
+      .querySelectorAll(`.${Note.toClassName(guess)}`)
+      .forEach((element) =>
+        flashElement(element, isCorrect ? 'green' : 'red', 200)
+      );
+
     setScore({
       correct: score.correct + (isCorrect ? 1 : 0),
       incorrect: score.incorrect + (!isCorrect ? 1 : 0),
@@ -44,11 +49,7 @@ const NoteIdentification: FC = () => {
         numStrings={6}
         highlightedNote={highlightedNote}
       />
-      <NoteInput
-        onClick={console.log}
-        className={'mt-8'}
-        onClick={handleGuess}
-      />
+      <NoteInput className={'mt-8'} onClick={handleGuess} />
     </div>
   );
 };
