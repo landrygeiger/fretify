@@ -1,10 +1,13 @@
 import NoteIdentification from './components/NoteIdentification';
+import { KeyboardContextProvider } from './contexts/KeyboardContext';
 
 const App = () => {
   return (
-    <div className="relative left-1/2 -translate-x-1/2 max-w-5xl p-4">
-      <NoteIdentification />
-    </div>
+    <KeyboardContextProvider>
+      <div className="relative left-1/2 -translate-x-1/2 max-w-5xl p-4">
+        <NoteIdentification />
+      </div>
+    </KeyboardContextProvider>
   );
 };
 

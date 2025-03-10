@@ -5,6 +5,7 @@ import NoteButton from './NoteButton';
 type Props = {
   noteBases?: Note.Base[];
   showRareEnharmonics?: boolean;
+  enableHotkeys?: boolean;
   onClick?: (note: Note.Note) => unknown;
   className?: string;
 };
@@ -12,6 +13,7 @@ type Props = {
 const NoteInput: FC<Props> = ({
   noteBases = Note.bases,
   showRareEnharmonics = false,
+  enableHotkeys = false,
   onClick = () => {},
   className = '',
 }) => {
@@ -35,7 +37,12 @@ const NoteInput: FC<Props> = ({
     >
       {notes.map((note) =>
         isButtonVisible(note) ? (
-          <NoteButton note={note} onClick={onClick} key={Note.toString(note)} />
+          <NoteButton
+            note={note}
+            onClick={onClick}
+            key={Note.toString(note)}
+            enableHotkey={enableHotkeys}
+          />
         ) : (
           <div key={Note.toString(note)} />
         )

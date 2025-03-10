@@ -49,7 +49,7 @@ const NoteIdentification: FC = () => {
         numStrings={6}
         highlightedNote={highlightedNote}
       />
-      <NoteInput className={'mt-8'} onClick={handleGuess} />
+      <NoteInput className={'mt-8'} onClick={handleGuess} enableHotkeys />
     </div>
   );
 };
