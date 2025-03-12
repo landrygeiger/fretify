@@ -1,49 +1,34 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import useNoteIdentification from '../hooks/useNoteIdentification';
+import * as Note from '../types/note';
+import { flashClass } from '../utils/element';
+import Text from './Base/Text';
 import Fretboard from './Fretboard/Fretboard';
 import NoteInput from './NoteInput/NoteInput';
-import * as Note from '../types/note';
-import { randomInt } from '../utils/math';
-import { fretToNoteNumber, STANDARD_TUNING } from '../utils/fretboard';
-import Text from './Base/Text';
-import { flashElement } from '../utils/element';
-import useTimer from '../hooks/useTimer';
+
+const FRETBOARD_RANGE = {
+  strings: {
+    min: 1,
+    max: 6,
+  },
+  frets: {
+    min: 0,
+    max: 12,
+  },
+};
 
 const NoteIdentification: FC = () => {
-  const [score, setScore] = useState({ correct: 0, incorrect: 0 });
-  const [highlightedNote, setHighlightedNote] = useState({
-    string: randomInt(1, 7),
-    fret: randomInt(0, 13),
-  });
-
-  const { timerCount, startTimer, stopTimer } = useTimer({
-    seconds: 5,
-    onStop: () => console.log('done!'),
-  });
-
-  const handleGuess = (guess: Note.Note) => {
-    const realNumber = fretToNoteNumber(
-      highlightedNote.string,
-      highlightedNote.fret,
-      STANDARD_TUNING
-    );
-    const guessedNumber = Note.toNumber(guess);
-    const isCorrect = realNumber === guessedNumber;
-
-    document
-      .querySelectorAll(`.${Note.toClassName(guess)}`)
-      .forEach((element) =>
-        flashElement(element, isCorrect ? 'green' : 'red', 200)
-      );
-
-    setScore({
-      correct: score.correct + (isCorrect ? 1 : 0),
-      incorrect: score.incorrect + (!isCorrect ? 1 : 0),
+  const { score, guess, startTimer, stopTimer, timerCount, highlightedNote } =
+    useNoteIdentification({
+      fretboardRange: FRETBOARD_RANGE,
     });
-    setHighlightedNote({
-      string: randomInt(1, 7),
-      fret: randomInt(0, 13),
+
+  const handleGuess = (note: Note.Note) =>
+    guess({
+      guess: note,
+      onCorrect: () => flashClass(Note.toClassName(note), 'green'),
+      onIncorrect: () => flashClass(Note.toClassName(note), 'red'),
     });
-  };
 
   return (
     <div>

@@ -19,3 +19,8 @@ export const flashElement = (
     }, duration / 2);
   }, duration / 2);
 };
+
+export const flashClass = (className: string, color: string, duration = 500) =>
+  document
+    .querySelectorAll(`.${className}`)
+    .forEach((element) => flashElement(element, color, duration));
