@@ -6,12 +6,18 @@ import { randomInt } from '../utils/math';
 import { fretToNoteNumber, STANDARD_TUNING } from '../utils/fretboard';
 import Text from './Base/Text';
 import { flashElement } from '../utils/element';
+import useTimer from '../hooks/useTimer';
 
 const NoteIdentification: FC = () => {
   const [score, setScore] = useState({ correct: 0, incorrect: 0 });
   const [highlightedNote, setHighlightedNote] = useState({
     string: randomInt(1, 7),
     fret: randomInt(0, 13),
+  });
+
+  const { timerCount, startTimer, stopTimer } = useTimer({
+    seconds: 5,
+    onStop: () => console.log('done!'),
   });
 
   const handleGuess = (guess: Note.Note) => {
@@ -50,6 +56,9 @@ const NoteIdentification: FC = () => {
         highlightedNote={highlightedNote}
       />
       <NoteInput className={'mt-8'} onClick={handleGuess} enableHotkeys />
+      <p>{timerCount}</p>
+      <button onClick={startTimer}>start</button>
+      <button onClick={stopTimer}>stop</button>
     </div>
   );
 };
