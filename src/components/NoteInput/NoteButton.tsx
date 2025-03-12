@@ -37,16 +37,16 @@ const NoteButton: FC<Props> = ({ note, onClick, enableHotkey = false }) => {
     onClick(note);
   };
 
-  const borderClass =
+  const backgroundClass =
     enableHotkey &&
     ((upArrow && note.modifier === '#') || (downArrow && note.modifier === 'b'))
-      ? 'border-2'
+      ? 'bg-gray-100'
       : '';
 
   return (
     <Button
       onClick={handleClick}
-      className={`h-12 ${Note.toClassName(note)} ${borderClass}`}
+      className={`h-12 ${Note.toClassName(note)} ${backgroundClass}`}
     >
       {Note.toString(note)}
     </Button>
